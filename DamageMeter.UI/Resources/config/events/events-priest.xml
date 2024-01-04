@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<events>
+	
+	
+	<!-- Unleash berserker -->
+	<abnormality ingame="true" trigger="Added" target="Party" ignore_classes="Berserker">
+		<abnormalities>
+			<abnormality>401705</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="1000" />
+				<text_to_speech text="{abnormality_name}" voice_gender="Male" voice_age="Adult" voice_position="0" volume="30" rate="1"/>
+			</notify>
+		</actions>
+	</abnormality>
+	
+	<!-- Energy Stars -->
+	<abnormality active="true" ingame="true"  rewarn_timeout_seconds="5" remaining_seconds_before_trigger="4" trigger="MissingDuringFight" target="Self">
+		<abnormalities>
+			<abnormality>801500</abnormality>
+			<abnormality>801501</abnormality>
+			<abnormality>801502</abnormality>
+			<abnormality>801503</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
+				<text_to_speech text="{abnormality_name}" voice_gender="Female" voice_age="Adult"  voice_position="0" volume="80" rate="+2"/>
+			</notify>
+		</actions>
+	</abnormality>
+		
+	<!-- Thrall of Wrath -->
+	<abnormality active="true" ingame="true"  trigger="Added" target="Self">
+		<abnormalities>
+			<abnormality>702004</abnormality>
+		</abnormalities>
+		<actions> 
+			<notify>
+				<balloon title_text="{abnormality_name}" body_text="START {abnormality_name}" display_time="3000" />
+				<text_to_speech text="Start {abnormality_name}" voice_gender="Female" voice_age="Adult"  voice_position="0" volume="80" rate="+2"/>
+			</notify>
+		</actions>
+	</abnormality>
+	
+		<!-- Thrall of Wrath -->
+	<abnormality active="true" ingame="true"  trigger="Removed" target="Self">
+		<abnormalities>
+			<abnormality>702004</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name}" body_text="END {abnormality_name}" display_time="3000" />
+				<text_to_speech text="END {abnormality_name}" voice_gender="Female" voice_age="Adult"  voice_position="0" volume="80" rate="+2"/>
+			</notify>
+		</actions>
+	</abnormality>
+	
+	<!-- Triple Nemesis -->
+	<abnormality ingame="true" rewarn_timeout_seconds="5" remaining_seconds_before_trigger="3" trigger="MissingDuringFight" target="Boss">
+		<abnormalities>
+			<abnormality>28090</abnormality>
+			<abnormality>27160</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<text_to_speech text="{abnormality_name}" voice_gender="Female" voice_age="Adult"  voice_position="0" volume="80" rate="+2"/>
+			</notify>
+		</actions>
+	</abnormality>
+</events>

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<events>	
+	<!-- Endurance debuff -->
+	<abnormality active="true" ingame="true" rewarn_timeout_seconds="5" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Boss">
+		<abnormalities>
+			<abnormality>200300</abnormality>
+			<abnormality>200301</abnormality>
+			<abnormality>200302</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<balloon title_text="{abnormality_name}" body_text="{abnormality_name}" display_time="3000" />
+				<text_to_speech text="{abnormality_name}" volume="80" rate="+3"/>
+			</notify>
+		</actions>
+	</abnormality>
+</events>
