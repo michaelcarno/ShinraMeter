@@ -874,4 +874,22 @@ Reset and paused until map change or relog.</value>
   <data name="CloseNoConfirm" xml:space="preserve">
     <value>Close (no confirm)</value>
   </data>
+  <data name="CaptureMode" xml:space="preserve">
+    <value>Capture mode</value>
+  </data>
+  <data name="ConnectedTo" xml:space="preserve">
+    <value>Connected to</value>
+  </data>
+  <data name="RealtimeGraphMode" xml:space="preserve">
+    <value>Graph mode</value>
+  </data>
+  <data name="RealtimeGraphAnimated" xml:space="preserve">
+    <value>Animate</value>
+  </data>
+  <data name="SettingsTab_Layout" xml:space="preserve">
+    <value>Layout settings</value>
+  </data>
+  <data name="SystemTray_SnapToBorders" xml:space="preserve">
+    <value>Snap windows to borders</value>
+  </data>
 </root>

@@ -28,11 +28,10 @@
                    VerticalAlignment="Center" 
                    Padding="0" 
                    TextAlignment="Left" 
-                   Opacity=".9">
-        </TextBlock>
+                   Opacity=".9" />
 
-                 <!--MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown"-->
-        <TextBox Grid.Column="3" 
+        <!--MouseLeftButtonDown="UIElement_OnMouseLeftButtonDown"-->
+        <TextBox Grid.Column="2" 
                  Width="170" 
                  TextAlignment="Center" Background="#1fff" Foreground="#5fff" 
                  HorizontalAlignment="Right"
@@ -58,7 +57,7 @@
             </TextBox.Style>
 
         </TextBox>
-<Button Grid.Column="3"
+<Button Grid.Column="2"
           VerticalAlignment="Center"
           HorizontalAlignment="Right"
           Margin="7 0"
@@ -70,7 +69,7 @@
           Width="10"
           Height="10"
           Fill="#3fff"
-          Margin="3"></Path>
+          Margin="3" />
 </Button>
 
     </Grid>

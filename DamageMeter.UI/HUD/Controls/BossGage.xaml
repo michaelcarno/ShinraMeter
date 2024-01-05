@@ -50,7 +50,7 @@
 
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Name="BossNameTB" Style="{StaticResource tcc_text}"
+                    <TextBlock Name="BossNameTB" Style="{StaticResource DefaultTextStyle}"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Center"
                                FontSize="14"
@@ -59,7 +59,7 @@
                                Grid.Column="0" />
                   
 
-                    <TextBlock Style="{StaticResource tcc_text}"
+                    <TextBlock Style="{StaticResource DefaultTextStyle}"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
                                Margin="20,0,0,0"
@@ -69,7 +69,7 @@
                                Text="{Binding CurrentPercentage, StringFormat=##0.## %}"
                                Grid.Row="0"
                                Grid.Column="1" />
-                    <TextBlock Style="{StaticResource tcc_text}"
+                    <TextBlock Style="{StaticResource DefaultTextStyle}"
                                HorizontalAlignment="Right"
                                VerticalAlignment="Center"
                                Margin="20,0,0,0"
@@ -147,7 +147,7 @@
                 </Grid>
                 <StackPanel Width="28" Height="Auto" Orientation="Vertical" Opacity="1" Name="NextEnrage"
                             Margin="-14,-5,0,0" HorizontalAlignment="Left" RenderTransformOrigin="0.5,0.5"
-                            VerticalAlignment="Top" Grid.Row="2">
+                            VerticalAlignment="Top" Grid.Row="1">
                     <StackPanel.RenderTransform>
                         <TransformGroup>
                             <ScaleTransform />
@@ -160,7 +160,7 @@
                         </Polygon>-->
                     <Ellipse Fill="#fa0" Width="6" Height="{Binding ElementName=enrageEll, Path=Width}"
                              Name="enrageEll" Stroke="#fb0" />
-                    <TextBlock Width="Auto" FontSize="12" Style="{StaticResource tcc_text}"
+                    <TextBlock Width="Auto" FontSize="12" Style="{StaticResource DefaultTextStyle}"
                                TextAlignment="Center" VerticalAlignment="Top" Margin="0,0,0,0" Padding="0"
                                Text="{Binding EnrageTBtext, RelativeSource={RelativeSource AncestorType=controls:BossGage}}" />
                 </StackPanel>
@@ -171,7 +171,6 @@
                 DataContext="{Binding}" 
                 x:Name="runemarksBar"  
                 Width="220"
-                Grid.Column="1"
                 Grid.RowSpan="1"
                 VerticalAlignment="Center"
             />

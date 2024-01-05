@@ -9,12 +9,13 @@
     <OutputPath>bin\$(Configuration)\</OutputPath>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
-    <TargetFrameworks>netcoreapp3.1;net471</TargetFrameworks>
+    <TargetFrameworks>net8-windows;net7-windows;net5-windows;net6-windows;net471</TargetFrameworks>
   </PropertyGroup>
-  <ItemGroup Condition="$(TargetFramework.StartsWith('netcore'))">
+  <ItemGroup Condition="$(TargetFramework.StartsWith('net5'))">
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="3.1.0" />
   </ItemGroup>
   <ItemGroup Condition="$(TargetFramework.StartsWith('net4'))">
+
   </ItemGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>embedded</DebugType>
@@ -28,16 +29,17 @@
     <CopySQLiteInteropFiles>false</CopySQLiteInteropFiles>
     <CleanSQLiteInteropFiles>true</CleanSQLiteInteropFiles>
     <CollectSQLiteInteropFiles>false</CollectSQLiteInteropFiles>
+    <LangVersion>12</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="DiscordRichPresence" Version="1.0.150" />
+    <PackageReference Include="DiscordRichPresence" Version="1.0.175" />
     <PackageReference Include="EntityFramework" Version="6.4.4" />
     <PackageReference Include="EPPlus" Version="4.5.3.3" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Squid-Box.SevenZipSharp" Version="1.3.283" />
-    <PackageReference Include="System.Data.SQLite" Version="1.0.113.1" />
-    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.113.1" />
-    <PackageReference Include="System.Data.SQLite.EF6" Version="1.0.113" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.116" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.116" />
+    <PackageReference Include="System.Data.SQLite.EF6" Version="1.0.116" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="DiscordRPC">

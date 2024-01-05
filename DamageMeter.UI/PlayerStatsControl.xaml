@@ -1,0 +1,171 @@
+﻿<UserControl x:Class="DamageMeter.UI.PlayerStatsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:l="clr-namespace:DamageMeter.UI"
+             xmlns:converters="clr-namespace:DamageMeter.UI.HUD.Converters"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             mc:Ignorable="d"
+             Focusable="False"
+             Height="30"
+             Background="Transparent"
+             MouseLeftButtonDown="DragWindow"
+             MouseEnter="OnMouseEnter"
+             MouseLeave="OnMouseLeave"
+             d:DataContext="{d:DesignInstance l:PlayerDamageViewModel}">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="MouseRightButtonDown">
+            <i:InvokeCommandAction Command="{Binding ShowSkillDetailsCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <UserControl.Resources>
+    </UserControl.Resources>
+
+    <Grid Focusable="False" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" >
+
+        <!--DpsBar-->
+        <Border x:Name="DpsIndicator"
+                Focusable="False"
+                Opacity="1"
+                HorizontalAlignment="Left" VerticalAlignment="Stretch"
+                Height="Auto" Width="Auto">
+            <Border.Background>
+                <LinearGradientBrush EndPoint="0 1">
+                    <GradientStop Color="{Binding Role, Converter={converters:RoleToColorConverter Opacity=0}}" />
+                    <GradientStop Color="{Binding Role, Converter={converters:RoleToColorConverter Opacity=.2}}"
+                                  Offset="1" />
+                </LinearGradientBrush>
+            </Border.Background>
+            <Border.BorderBrush>
+                <LinearGradientBrush EndPoint="0 1">
+                    <GradientStop Color="{Binding Role, Converter={converters:RoleToColorConverter Opacity=0}}"
+                                  Offset=".6" />
+                    <GradientStop Color="{Binding Role, Converter={converters:RoleToColorConverter Opacity=.9}}"
+                                  Offset="1" />
+                </LinearGradientBrush>
+            </Border.BorderBrush>
+            <Grid>
+                <Border x:Name="IndicatorGovernor"
+                        HorizontalAlignment="Left"
+                        Width="{Binding ActualWidth, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=l:PlayerStatsControl}}">
+                    <Border.LayoutTransform>
+                        <ScaleTransform ScaleX="0" />
+                    </Border.LayoutTransform>
+                </Border>
+                <Border Background="{Binding Role, Converter={converters:RoleToColorConverter}}"
+                        VerticalAlignment="Bottom"
+                        Height="1" />
+            </Grid>
+        </Border>
+
+        <!--  D -> [ icon | name | dmg% | dps (+ trend?) | crit% | dmg | dmgt | dpst | deaths | floortime ] -->
+        <!--  T -> [ icon | name |   "  |       "        |   "   | dmg | dmgt | dpst | deaths | floortime | aggro% | enrage casts? ] -->
+        <!--  H -> [ icon | name |   "  |       "        |   "   | dmg | dmgt | dpst | deaths | floortime | hcrit% |      hps      | endu% ] -->
+        <!--  M -> [ icon | name |   "  |       "        |   "   | dmg | dmgt | dpst | deaths | floortime | hcrit% |      hps      |   "   |  tov%  |  tow%  ] -->
+        <!--  P -> [ icon | name |   "  |       "        |   "   | dmg | dmgt | dpst | deaths | floortime | hcrit% |      hps      |   "   |   dc%  |  eoj%  |  es%  ] -->
+
+        <!--Stats-->
+        <Grid x:Name="GridStats"
+              Focusable="False"
+              HorizontalAlignment="Stretch"
+              VerticalAlignment="Stretch">
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Setter Property="Background" Value="Transparent" />
+                    <Style.Triggers>
+                        <DataTrigger
+                            Binding="{Binding IsHovered, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=l:PlayerStatsControl}}"
+                            Value="True">
+                            <Setter Property="Background">
+                                <Setter.Value>
+                                    <LinearGradientBrush StartPoint="0 0" EndPoint="1 0">
+                                        <GradientStop Color="Transparent" />
+                                        <GradientStop Color="#1fff" Offset=".15" />
+                                        <GradientStop Color="Transparent" Offset="1" />
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Name}" Value="Unknown damage">
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="Opacity" Value=".3" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition SharedSizeGroup="p0" Width="25" />
+                <ColumnDefinition MinWidth="90" Width="*" />
+                <ColumnDefinition SharedSizeGroup="p2" Width="Auto" />
+                <ColumnDefinition SharedSizeGroup="p3" Width="Auto" />
+                <ColumnDefinition SharedSizeGroup="p4" Width="Auto" />
+                <ColumnDefinition SharedSizeGroup="p5" Width="Auto" />
+                <ColumnDefinition SharedSizeGroup="p6" Width="Auto" />
+                <ColumnDefinition SharedSizeGroup="p7" Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <!--Class-->
+            <Path x:Name="Class"
+                  Data="{Binding Class, Converter={StaticResource ClassToSvg}}"
+                  Focusable="False"
+                  Fill="#ddd"
+                  RenderOptions.BitmapScalingMode="HighQuality"
+                  Stretch="Uniform"
+                  HorizontalAlignment="Center" VerticalAlignment="Center"
+                  Height="18" Width="18"
+                  Margin="2 0 0 0" />
+
+            <!--Name-->
+            <TextBlock x:Name="LabelName"
+                       ToolTip="{Binding FullName}"
+                       Grid.Column="1"
+                       TextTrimming="CharacterEllipsis"
+                       Margin="2 0 10 0"
+                       HorizontalAlignment="Left"
+                       Foreground="White">
+                <Run Text="{Binding Name, Mode=OneWay}" />
+                <Run Text="{Binding Level, Mode=OneWay}"
+                     Foreground="#888"
+                     FontSize="11" />
+                <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource MetricTextBlockStyle}">
+                        <Setter Property="Effect" Value="{x:Null}" />
+                        <Style.Triggers>
+                            <DataTrigger
+                                Binding="{Binding  Path=DataContext.(l:MainViewModel.BlurPlayerNames), RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type l:MainWindow}}}"
+                                Value="True">
+                                <Setter Property="Effect">
+                                    <Setter.Value>
+                                        <BlurEffect x:Name="blurEffect" Radius="7" KernelType="Box" />
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+
+            <ContentControl Grid.Column="2"
+                            Content="{Binding}"
+                            ContentTemplate="{Binding Metric1, Converter={StaticResource MetricTemplateSelector}}" />
+
+            <ContentControl Grid.Column="3"
+                            Content="{Binding}"
+                            ContentTemplate="{Binding Metric2, Converter={StaticResource MetricTemplateSelector}}" />
+
+            <ContentControl Grid.Column="4"
+                            Content="{Binding}"
+                            ContentTemplate="{Binding Metric3, Converter={StaticResource MetricTemplateSelector}}" />
+
+            <ContentControl Grid.Column="5"
+                            Content="{Binding}"
+                            ContentTemplate="{Binding Metric4, Converter={StaticResource MetricTemplateSelector}}" />
+
+            <ContentControl Grid.Column="6"
+                            Content="{Binding}" 
+                            ContentTemplate="{Binding Metric5, Converter={StaticResource MetricTemplateSelector}}" />
+
+        </Grid>
+    </Grid>
+</UserControl>

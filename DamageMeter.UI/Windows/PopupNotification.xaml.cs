@@ -14,10 +14,22 @@ namespace DamageMeter.UI
     {
         public PopupNotification()
         {
+            Loaded += OnLoaded;
             InitializeComponent();
             notificationBalloons = new SynchronizedObservableCollection<Balloon>();
             notificationBalloons.CollectionChanged += NotificationBalloons_CollectionChanged;
             content.ItemsSource = notificationBalloons;
+
+            this.LastSnappedPoint = BasicTeraData.Instance.WindowData.PopupNotificationLocation;
+            this.Left = this.LastSnappedPoint?.X ?? 0;
+            this.Top = this.LastSnappedPoint?.Y ?? 0;
+
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            this.Show();
+            this.Hide();
         }
 
         private static PopupNotification _instance = null;
@@ -36,7 +48,7 @@ namespace DamageMeter.UI
 
         public void AddNotification(List<NotifyFlashMessage> flashList)
         {
-            foreach(NotifyFlashMessage flash in flashList.OrderByDescending(x => x.Priority))
+            foreach(var flash in flashList.OrderByDescending(x => x.Priority))
             {
                 AddNotification(flash);
             }
@@ -45,24 +57,15 @@ namespace DamageMeter.UI
 
         public void AddNotification(NotifyFlashMessage flash)
         {
-            if (flash == null) { return; }
-            if (flash.Balloon != null && flash.Balloon.DisplayTime >= 500)
+            Dispatcher.Invoke(() =>
             {
-                var existing = notificationBalloons.ToSyncArray().FirstOrDefault(x => x.TitleText == flash.Balloon.TitleText && x.Icon == flash.Balloon.Icon);
-                if (existing == null)
+
+                if (flash == null) { return; }
+
+                if (flash.Balloon != null && flash.Balloon.DisplayTime >= 500)
                 {
-                    if (!SnappedToBottom)
-                    {
-                        notificationBalloons.Add(flash.Balloon);
-                    }
-                    else
-                    {
-                        notificationBalloons.Insert(0, flash.Balloon);
-                    }
-                }
-                else
-                {
-                    if(flash.Balloon.EventType == EventType.Whisper)
+                    var existing = notificationBalloons.ToSyncArray().FirstOrDefault(x => x.TitleText == flash.Balloon.TitleText && x.Icon == flash.Balloon.Icon);
+                    if (existing == null)
                     {
                         if (!SnappedToBottom)
                         {
@@ -75,15 +78,31 @@ namespace DamageMeter.UI
                     }
                     else
                     {
-                        existing.UpdateBody(flash.Balloon.BodyText);
-                        existing.Refresh();
+                        if (flash.Balloon.EventType == EventType.Whisper)
+                        {
+                            if (!SnappedToBottom)
+                            {
+                                notificationBalloons.Add(flash.Balloon);
+                            }
+                            else
+                            {
+                                notificationBalloons.Insert(0, flash.Balloon);
+                            }
+                        }
+                        else
+                        {
+                            existing.UpdateBody(flash.Balloon.BodyText);
+                            existing.Refresh();
+                        }
                     }
+
+                    Topmost = false;
+                    Topmost = true;
+                    if (!IsVisible) ShowWindow();
                 }
-                Topmost = false;
-                Topmost = true;
-                if (!IsVisible) ShowWindow();
-            }
-            if (!BasicTeraData.Instance.WindowData.MuteSound && flash.Sound != null) { Task.Run(() => flash.Sound.Play()); }
+
+                if (!BasicTeraData.Instance.WindowData.MuteSound && flash.Sound != null) { Task.Run(() => flash.Sound.Play()); }
+            });
         }
 
         public double DHeight
@@ -111,6 +130,12 @@ namespace DamageMeter.UI
             }
             else { spacer.Height = 0; bottomspacer.Height = 0;}
             return base.MeasureOverride(availableSize);
+        }
+
+        public override void SaveWindowPos()
+        {
+            if (double.IsNaN(Left)|| double.IsNaN(Top)) return;
+            BasicTeraData.Instance.WindowData.PopupNotificationLocation = LastSnappedPoint ?? new Point(Left, Top);
         }
     }
 }

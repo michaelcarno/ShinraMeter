@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<events>
+	<!-- Focus -->
+	<abnormality active="true" rewarn_timeout_seconds="3" ingame="true" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="Self">
+		<abnormalities>
+			<abnormality>10154030</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<text_to_speech text="Focus" voice_gender="Female" voice_age="Adult"  voice_position="0" volume="80" rate="+3"/>
+			</notify>
+		</actions>
+	</abnormality>
+</events>

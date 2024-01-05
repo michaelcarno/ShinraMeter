@@ -6,12 +6,9 @@
     <Product>Publisher</Product>
     <Copyright>Copyright ©  2017</Copyright>
     <OutputPath>bin\$(Configuration)\</OutputPath>
-    <TargetFrameworks>netcoreapp3.1;net471</TargetFrameworks>
+    <TargetFrameworks>net8-windows;net7-windows;net5-windows;net6-windows</TargetFrameworks>
+    <LangVersion>12</LangVersion>
   </PropertyGroup>
-  <ItemGroup Condition="$(TargetFramework.StartsWith('netcore'))">
-  </ItemGroup>
-  <ItemGroup Condition="$(TargetFramework.StartsWith('net4'))">
-  </ItemGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>embedded</DebugType>
     <DebugSymbols>true</DebugSymbols>

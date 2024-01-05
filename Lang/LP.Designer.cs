@@ -313,6 +313,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Capture mode.
+        /// </summary>
+        public static string CaptureMode {
+            get {
+                return ResourceManager.GetString("CaptureMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Chained.
         /// </summary>
         public static string Chained {
@@ -381,6 +390,15 @@ namespace Lang {
         public static string Common {
             get {
                 return ResourceManager.GetString("Common", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connected to.
+        /// </summary>
+        public static string ConnectedTo {
+            get {
+                return ResourceManager.GetString("ConnectedTo", resourceCulture);
             }
         }
         
@@ -1400,6 +1418,15 @@ namespace Lang {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Animate.
+        /// </summary>
+        public static string RealtimeGraphAnimated {
+            get {
+                return ResourceManager.GetString("RealtimeGraphAnimated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CMA seconds.
         /// </summary>
         public static string RealtimeGraphCmaSeconds {
@@ -1414,6 +1441,15 @@ namespace Lang {
         public static string RealtimeGraphDisplayedInterval {
             get {
                 return ResourceManager.GetString("RealtimeGraphDisplayedInterval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Graph mode.
+        /// </summary>
+        public static string RealtimeGraphMode {
+            get {
+                return ResourceManager.GetString("RealtimeGraphMode", resourceCulture);
             }
         }
         
@@ -1751,6 +1787,15 @@ namespace Lang {
         public static string SettingsTab_Input {
             get {
                 return ResourceManager.GetString("SettingsTab_Input", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Layout settings.
+        /// </summary>
+        public static string SettingsTab_Layout {
+            get {
+                return ResourceManager.GetString("SettingsTab_Layout", resourceCulture);
             }
         }
         
@@ -2192,6 +2237,15 @@ namespace Lang {
         public static string SystemTray_Site_export {
             get {
                 return ResourceManager.GetString("SystemTray_Site_export", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Snap windows to borders.
+        /// </summary>
+        public static string SystemTray_SnapToBorders {
+            get {
+                return ResourceManager.GetString("SystemTray_SnapToBorders", resourceCulture);
             }
         }
         

@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
+using System.Windows.Threading;
 using DamageMeter.Database.Structures;
 using DamageMeter.Processing;
 using DamageMeter.Sniffing;
@@ -17,6 +18,7 @@ using Tera.Game.Abnormality;
 using Tera.Game.Messages;
 using Message = Tera.Message;
 using Tera.RichPresence;
+using Tera.Sniffing;
 
 namespace DamageMeter
 {
@@ -39,6 +41,7 @@ namespace DamageMeter
         private static volatile PacketProcessor _instance;
         private static readonly object _lock = new object();
         private static readonly object _pasteLock = new object();
+        public ITeraSniffer Sniffer { get; }
         internal AbnormalityStorage AbnormalityStorage;
 
         internal readonly List<Player> MeterPlayers = new List<Player>();
@@ -48,7 +51,9 @@ namespace DamageMeter
         internal AbnormalityTracker AbnormalityTracker;
         public ConcurrentDictionary<UploadData, NpcEntity> BossLink = new ConcurrentDictionary<UploadData, NpcEntity>();
         public GlyphBuild Glyphs = new GlyphBuild();
-        internal MessageFactory MessageFactory = new MessageFactory();
+
+        internal MessageFactory MessageFactory { get; set; }
+
         internal bool NeedInit = true;
         public CopyKey NeedToCopy;
 
@@ -57,19 +62,37 @@ namespace DamageMeter
         public bool NeedToResetCurrent;
         public bool NeedPause;
 
+
         internal PacketProcessingFactory PacketProcessing = new PacketProcessingFactory();
         public Server Server;
         internal UserLogoTracker UserLogoTracker = new UserLogoTracker();
 
         private PacketProcessor()
         {
-            TeraSniffer.Instance.NewConnection += HandleNewConnection;
-            TeraSniffer.Instance.EndConnection += HandleEndConnection;
+            MessageFactory = new MessageFactory();
+            Sniffer = SnifferFactory.Create();
+            /*TeraSniffer.Instance*/
+            Sniffer.NewConnection += HandleNewConnection;
+            /*TeraSniffer.Instance*/
+            Sniffer.EndConnection += HandleEndConnection;
+
+            if (Sniffer is ToolboxSniffer tbs)
+            {
+                tbs.ReleaseVersionUpdated += OnReleaseVersionUpdated;
+            }
+
             AbnormalityStorage = new AbnormalityStorage();
             Initialize();
             var packetAnalysis = new Thread(PacketAnalysisLoop);
             packetAnalysis.Start();
-            TeraSniffer.Instance.EnableMessageStorage = BasicTeraData.Instance.WindowData.PacketsCollect;
+            /*TeraSniffer.Instance*/
+            Sniffer.EnableMessageStorage = BasicTeraData.Instance.WindowData.PacketsCollect;
+        }
+
+        private void OnReleaseVersionUpdated(int rv)
+        {
+            MessageFactory.ReleaseVersion = rv;
+            MessageFactory.ReloadSysMsg();
         }
 
         public List<NotifyFlashMessage> FlashMessage = new List<NotifyFlashMessage>();
@@ -116,6 +139,9 @@ namespace DamageMeter
         public event Action MapChangedAction;
         public event Action OverloadedChanged;
 
+        /// <summary>
+        /// Calls <see cref="Application.Exit()"/> after disposing some objects.
+        /// </summary>
         public void Exit()
         {
             if (_keepAlive)
@@ -124,7 +150,8 @@ namespace DamageMeter
                 BasicTeraData.Instance.WindowData.Close();
                 BasicTeraData.Instance.HotkeysData.Save();
             }
-            TeraSniffer.Instance.Enabled = false;
+            /*TeraSniffer.Instance*/
+            Sniffer.Enabled = false;
             _keepAlive = false;
             Thread.Sleep(500);
             HudManager.Instance.CurrentBosses.DisposeAll();
@@ -220,7 +247,7 @@ namespace DamageMeter
             var entityInfo = Database.Database.Instance.GlobalInformationEntity(currentBoss, timedEncounter, BasicTeraData.Instance.WindowData.DisplayTimerBasedOnAggro);
             if (currentBoss != null)
             {
-                NotifyProcessor.Instance._lastBosses.TryGetValue(currentBoss.Id, out long entityHP);
+                NotifyProcessor.Instance._lastBosses.TryGetValue(currentBoss.Id, out var entityHP);
                 var entityDamaged = currentBoss.Info.HP - entityHP;
                 entityInfo.TimeLeft = entityDamaged == 0 ? 0 : entityInfo.Interval * entityHP / entityDamaged;
             }
@@ -250,8 +277,6 @@ namespace DamageMeter
             var abnormals = AbnormalityStorage.Clone(currentBoss, entityInfo.BeginTime, entityInfo.EndTime);
             var uiMessage = new UiUpdateMessage(statsSummary, skills, filteredEntities, timedEncounter, abnormals, teradpsHistory, chatbox, flash, packetsWaiting);
             handler?.Invoke(uiMessage);
-            RichPresence.Instance.Invoke();
-
         }
 
         public void Initialize()
@@ -382,7 +407,7 @@ namespace DamageMeter
 
                 Encounter = NewEncounter;
 
-                var packetsWaiting = TeraSniffer.Instance.Packets.Count;
+                var packetsWaiting = /*TeraSniffer.Instance*/Sniffer.Packets.Count;
                 if (packetsWaiting > 5000)
                 {
                     if (!BasicTeraData.Instance.WindowData.IgnorePacketsThreshold)
@@ -413,7 +438,7 @@ namespace DamageMeter
 
                 CheckUpdateUi(packetsWaiting);
 
-                var successDequeue = TeraSniffer.Instance.Packets.TryDequeue(out Message obj);
+                var successDequeue = /*TeraSniffer.Instance*/Sniffer.Packets.TryDequeue(out var obj);
                 if (!successDequeue)
                 {
                     Thread.Sleep(1);
@@ -449,7 +474,8 @@ namespace DamageMeter
             {
                 AbnormalityStorage.EndAll(DateTime.UtcNow.Ticks);
             }
-            TeraSniffer.Instance.ClearPackets();
+            /*TeraSniffer.Instance.Packets = new ConcurrentQueue<Message>(); */
+            Sniffer.ClearPackets();
             HudManager.Instance.CurrentBosses.DisposeAll();
             NotifyProcessor.Instance.S_LOAD_TOPO(null);
         }

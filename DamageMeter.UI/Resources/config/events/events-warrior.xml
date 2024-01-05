@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<events>
+	
+	<!-- Endurance debuff -->
+	<abnormality active="false" ingame="true" rewarn_timeout_seconds="5" remaining_seconds_before_trigger="0" trigger="MissingDuringFight" target="MyBoss">
+		<abnormalities>
+			<abnormality>101200</abnormality>
+			<abnormality>101220</abnormality>
+			<abnormality>200300</abnormality>
+			<abnormality>200301</abnormality>
+			<abnormality>200302</abnormality>
+			<abnormality>10153140</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<beeps>
+					<beep frequency="392" duration="500"/>
+				</beeps>
+			</notify>
+		</actions>
+	</abnormality>
+	<!-- Endurance debuff (traverse cut) -->
+	<abnormality active="false" ingame="true" rewarn_timeout_seconds="8" remaining_seconds_before_trigger="2" trigger="MissingDuringFight" target="MyBoss">
+		<abnormalities>
+			<abnormality>101300</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<text_to_speech text="{abnormality_name}" />
+			</notify>
+		</actions>
+	</abnormality>
+	
+	<!-- atk.speed stacks 13 -->
+	<abnormality ingame="true" rewarn_timeout_seconds="6" remaining_seconds_before_trigger="5" trigger="MissingDuringFight" target="Self">
+		<abnormalities>
+			<abnormality stack="13">101300</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<text_to_speech text="{abnormality_name} {stack}" />
+			</notify>
+		</actions>
+	</abnormality>
+	
+	<!-- Stance -->
+	<abnormality ingame="true" rewarn_timeout_seconds="7" remaining_seconds_before_trigger="3" trigger="MissingDuringFight" target="Self">
+		<abnormalities>
+			<abnormality>100201</abnormality>
+			<abnormality>100103</abnormality>
+		</abnormalities>
+		<actions>
+			<notify>
+				<text_to_speech text="{abnormality_name}" />
+			</notify>
+		</actions>
+	</abnormality>
+</events>

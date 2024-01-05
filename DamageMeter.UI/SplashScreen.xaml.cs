@@ -1,20 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.Windows.Threading;
+using Nostrum.Factories;
 
 namespace DamageMeter.UI
 {
@@ -26,6 +19,17 @@ namespace DamageMeter.UI
         public SplashScreen()
         {
             InitializeComponent();
+            Loaded += OnLoaded;
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                BeginAnimation(TopProperty, AnimationFactory.CreateDoubleAnimation(500, Screen.FromRectangle(new System.Drawing.Rectangle((int)Left, (int)Top, (int)Width, (int)Height)).Bounds.Height / 2 + ActualHeight / 2 + 40, easing: true));
+            }
+            catch { }
+
         }
 
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -94,13 +98,13 @@ namespace DamageMeter.UI
             waiting = false;
         }
 
-        internal void UpdateProgress(object sender, DownloadProgressChangedEventArgs e)
-        {
-            Dispatcher.Invoke(() =>
-            {
-                bar.Value = e.ProgressPercentage;
-                if (bar.Value == 100) bar.Value = 0;
-            });
-        }
+        //internal void UpdateProgress(object sender, DownloadProgressChangedEventArgs e)
+        //{
+        //    Dispatcher.Invoke(() =>
+        //    {
+        //        bar.Value = e.ProgressPercentage;
+        //        if (bar.Value == 100) bar.Value = 0;
+        //    });
+        //}
     }
 }

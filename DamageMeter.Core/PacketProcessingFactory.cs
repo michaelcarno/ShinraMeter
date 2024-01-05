@@ -95,9 +95,11 @@ namespace DamageMeter
             UpdateEntityTracker();
             UpdatePlayerTracker();
             UpdateAbnormalityTracker();
-            if (BasicTeraData.Instance.WindowData.EnableChat) {
+            if (BasicTeraData.Instance.WindowData.EnableChat)
+            {
                 MessageToProcessingOptionnal.ToList().ForEach(x => MainProcessor[x.Key] = x.Value);
-                if (PacketProcessor.Instance.EntityTracker?.MeterUser?.RaceGenderClass.Class == PlayerClass.Valkyrie) {
+                if (PacketProcessor.Instance.EntityTracker?.MeterUser?.RaceGenderClass.Class == PlayerClass.Valkyrie)
+                {
                     MainProcessor[typeof(S_WEAK_POINT)] = new Action<S_WEAK_POINT>(x => HudManager.Instance.UpdateRunemarks(x));
                 }
             }
@@ -176,7 +178,7 @@ namespace DamageMeter
 
         public bool Process(ParsedMessage message)
         {
-            MainProcessor.TryGetValue(message.GetType(), out Delegate type);
+            MainProcessor.TryGetValue(message.GetType(), out var type);
             if (type == null) { return false; }
             type.DynamicInvoke(message);
             return true;
