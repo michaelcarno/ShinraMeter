@@ -29,7 +29,7 @@ namespace Data
             }
             try
             {
-                Download("https://raw.githubusercontent.com/neowutran/TeraDpsMeterData/master/opcodes/protocol." + version + ".map", filename);
+                Download("https://raw.githubusercontent.com/michaelcarno/TeraDpsMeterData/master/opcodes/protocol." + version + ".map", filename);
                 return true;
             }
             catch { }
@@ -73,7 +73,7 @@ namespace Data
             }
             try
             {
-                Download("https://raw.githubusercontent.com/neowutran/TeraDpsMeterData/master/opcodes/sysmsg." + version + ".map", "sysmsg." + version + ".map");
+                Download("https://raw.githubusercontent.com/michalecarno/TeraDpsMeterData/master/opcodes/sysmsg." + version + ".map", "sysmsg." + version + ".map");
                 return true;
             }
             catch { }
