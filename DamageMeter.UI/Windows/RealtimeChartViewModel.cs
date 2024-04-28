@@ -81,7 +81,7 @@ public class RealtimeChartViewModel : TSPropertyChanged, IChartViewModel
         // skip update if timer is the same
         if (_currTime == message.StatsSummary.EntityInformation.Interval)
         {
-            IsChartVisible = DpsSeries.Count > 0 && _currSample != 0;
+            IsChartVisible = DpsSeries.Count > 0 && _currSample != 0 && BasicTeraData.Instance.WindowData.RealtimeGraphEnabled;
             return;
         }
         _currSample++;
@@ -132,7 +132,7 @@ public class RealtimeChartViewModel : TSPropertyChanged, IChartViewModel
 
 
         _currTime = message.StatsSummary.EntityInformation.Interval;
-        IsChartVisible = DpsSeries.Count > 0 && _currSample != 0;
+        IsChartVisible = DpsSeries.Count > 0 && _currSample != 0 && BasicTeraData.Instance.WindowData.RealtimeGraphEnabled;
 
         //if(_currTime / (double)TimeSpan.TicksPerSecond != 0)
         //    _xAxis.MaxLimit = _currTime / (double)TimeSpan.TicksPerSecond;
@@ -212,7 +212,7 @@ public class RealtimeChartViewModel : TSPropertyChanged, IChartViewModel
                 if (isMe) color = BasicTeraData.Instance.WindowData.PlayerColor;
                 var colorTrans = Color.FromArgb(0, color.R, color.G, color.B);
                 var ls = 0;
-                if (BasicTeraData.Instance.WindowData.GraphMode == GraphMode.DPS) { ls = 1; }
+                //if (BasicTeraData.Instance.WindowData.GraphMode == GraphMode.DPS) { ls = 1; }
 
                 // create the series
                 var newValues = new ObservableCollection<ObservablePoint>();
@@ -316,6 +316,7 @@ public class RealtimeChartViewModel : TSPropertyChanged, IChartViewModel
         _currEntity = 0;
         _currTime = -1;
         _currSample = 0;
+        IsChartVisible = false;
 
     }
 }
