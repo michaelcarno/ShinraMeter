@@ -127,9 +127,9 @@ namespace Data
                     {
                         var formContent = new FormUrlEncodedContent(new[] {new KeyValuePair<string, string>("error", error)});
 
-                        var response = client.PostAsync("http://diclah.com/~yukikoo/debug/debug.php", formContent);
-                        var responseString = response.Result.Content.ReadAsStringAsync();
-                        Console.WriteLine(responseString.Result);
+                        // var response = client.PostAsync("http://diclah.com/~yukikoo/debug/debug.php", formContent);
+                        // var responseString = response.Result.Content.ReadAsStringAsync();
+                        // Console.WriteLine(responseString.Result);
                     }
                 }
                 catch
